@@ -77,6 +77,7 @@ public class AndroidApplication extends AppCompatActivity implements AndroidAppl
     protected ApplicationLogger applicationLogger;
     protected boolean useImmersiveMode = false;
     protected boolean hideStatusBar = false;
+    protected boolean hideTitleBar = true;
     private int wasFocusChanged = -1;
     private boolean isWaitingForAudio = false;
 
@@ -142,6 +143,7 @@ public class AndroidApplication extends AppCompatActivity implements AndroidAppl
         this.handler = new Handler();
         this.useImmersiveMode = config.useImmersiveMode;
         this.hideStatusBar = config.hideStatusBar;
+        this.hideTitleBar = config.hideTitleBar;
         this.clipboard = new AndroidClipboard(this);
 
         // Add a specialized audio lifecycle listener
@@ -172,7 +174,9 @@ public class AndroidApplication extends AppCompatActivity implements AndroidAppl
 
         if (!isForView) {
             try {
-                requestWindowFeature(Window.FEATURE_NO_TITLE);
+                if (hideTitleBar) {
+                    requestWindowFeature(Window.FEATURE_NO_TITLE);
+                }
             } catch (Exception ex) {
                 log("AndroidApplication", "Content already displayed, cannot request FEATURE_NO_TITLE", ex);
             }
